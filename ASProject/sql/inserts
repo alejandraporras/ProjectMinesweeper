@@ -1,0 +1,4 @@
+﻿INSERT INTO RegisteredUser VALUES('ale', 'Alejandra', 'pass', 'Porras');
+INSERT INTO RegisteredUser VALUES('felipe', 'Felipe', 'xxx', 'Porras');
+INSERT INTO PLAYER VALUES('aa@gmail.com', 'ale', null);
+INSERT INTO Administrator VALUES('55555', 'felipe');
