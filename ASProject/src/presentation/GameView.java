@@ -330,8 +330,7 @@ public class GameView extends JFrame implements ActionListener, Runnable{
 	
 	public void actualizarBoton(Integer f, Integer c, Integer v){
 		//System.out.println("fila: f " + f + " col " + c + " value: " + v);
-		
-		
+
 		if(v == null){
 			buttons[f][c].setIcon(new ImageIcon(LevelsView.class.getResource("/presentation/pictures/empty-45x27.png")));
 
@@ -344,10 +343,7 @@ public class GameView extends JFrame implements ActionListener, Runnable{
 			
 		}
 	}
-	
-	public void mostrarMina(Integer f, Integer c){
-		buttons[f][c].setIcon(new ImageIcon(LevelsView.class.getResource("/presentation/pictures/losingmine-45x27.png")));
-	}
+
 	
 	public void mostraGuanyada( Integer punts ){
 		Object[] options = { "Accepta" };
@@ -381,18 +377,6 @@ public class GameView extends JFrame implements ActionListener, Runnable{
 					//System.out.println("***** " + aux.toString());
 					actualizarBoton(aux.getRowNumber(), aux.getColumnNumber(), aux.getValue());
 				}
-				/*
-				visibles = ctrl.descobrirCasella(obtenerCoordenadasButton(botonPressed));
-				System.out.println("num de casillas Visibles: "+ visibles.size()) ;
-				for (int v=0; v<visibles.size();++v){
-					System.out.println("Casillas a descubrir: F:" +visibles.get(v).get(0)+" C:"+visibles.get(v).get(1)+" V:"+visibles.get(v).get(2));
-				}
-				for (int v=0; v<visibles.size();++v){
-					Integer fila = visibles.get(v).get(0);
-					Integer col = visibles.get(v).get(1);
-					Integer valor = visibles.get(v).get(2);
-					actualizarBoton(fila,col,valor);
-				}*/
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -413,5 +397,14 @@ public class GameView extends JFrame implements ActionListener, Runnable{
 	}
 	public void desmarcarBoton(int nf, int nc) {
 		buttons[nf][nc].setIcon(new ImageIcon(LevelsView.class.getResource("/presentation/pictures/covered-45x27.png")));
+	}
+	
+	public void mostrarMinaClicked(Integer f, Integer c){
+		buttons[f][c].setIcon(new ImageIcon(LevelsView.class.getResource("/presentation/pictures/losingmine-45x27.png")));
+	}
+	public void mostrarMineMarked(Integer f, Integer c) {
+		System.out.println("dasdasdsd");
+		buttons[f][c].setIcon(new ImageIcon(LevelsView.class.getResource("/presentation/pictures/wrongmine-45x27.png")));
+		
 	}
 }

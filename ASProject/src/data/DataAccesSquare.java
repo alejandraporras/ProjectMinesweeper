@@ -53,13 +53,13 @@ public class DataAccesSquare implements SquareController {
 		List<Square> squares = all();
 		Square squareFound = null;
 		for(Square square : squares){
-			System.out.println(square.toString());
+			//System.out.println(square.toString());
 			if(square.getGame().getId() == game.getId() && square.getRowNumber() == i && square.getColumnNumber() == j) {
 				squareFound = square;
 				break;
 			}
 		}
-		System.out.println(squareFound.toString());
+		System.out.println("foounded " +squareFound.toString());
 		return squareFound;
 	}
 

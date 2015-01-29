@@ -16,7 +16,7 @@ public class PresentationController {
 	private final LoginView loginView;
 	private  LevelsView levelsView;
 	//private CUJugarPartida cujp; //controlador de caso de uso
-	private final  CUPlayGame game;
+	private final CUPlayGame game;
 	private GameView gameView;
 	private final DataFactoriaController dataController;
 	private String playerUsername;
@@ -27,8 +27,8 @@ public class PresentationController {
 		dataController = DataFactoriaController.getInstance();
 		loginView = new LoginView(this);
 		levelsView = new LevelsView(this,"");
-		//cujp = new CUJugarPartida(this);
 		game = new CUPlayGame(this);
+		
 	}
 
 	// Lo hacemos gral (muestra/oculta) si le agregamos un parametro
@@ -42,6 +42,7 @@ public class PresentationController {
 		
 		Level level = dataController.getLevelController().getLevel(nomNivell);
 		Player player = dataController.getPlayerController().getPlayer(playerUsername);
+		
 		game.createGame(level, player);///
 		Integer rows = level.getSquaresXRow();
 		Integer cols = level.getSquaresXColumn();
@@ -113,7 +114,7 @@ public class PresentationController {
 		game.setSquareToReveal(new ArrayList<Square>());
 		game.toUncoverSquareRec(b.getX(), b.getY());
 		if(game.getIsLost()){
-			showLost();
+			showLost(b.getX(), b.getY());
 		}
 		else if(game.isWon()){
 			gameView.mostraGuanyada(100);
@@ -130,55 +131,20 @@ public class PresentationController {
 		return result;
 		
 	}
-	public void showLost(){
+	public void showLost(Integer row, Integer col){
 		List<Square> squaresWithMine = game.getSquaresWithMine();
 		for(Square aux : squaresWithMine ){
-			gameView.actualizarBoton(aux.getRowNumber(), aux.getColumnNumber(), aux.getValue());
+
+			if(!aux.isMarked())gameView.actualizarBoton(aux.getRowNumber(), aux.getColumnNumber(), aux.getValue());
+			else gameView.mostrarMineMarked(aux.getRowNumber(), aux.getColumnNumber());
 		}
-		gameView.mostraPerdut();
+		setImageMineClicked(row,col);
+
 	}
-	/*
+	public void setImageMineClicked(Integer row, Integer col){
+		gameView.mostrarMinaClicked(row, col);
+	}
 	
-	public Integer getTemps() {
-		Integer s = partida.getSegons();
-		Integer m = partida.getMinuts();
-		return s+m*60;
-	}
-	
-	public String[] obtenirNomNivells() throws Exception{
-		ArrayList<ArrayList<String>> res = cujp.obtenirNivells();
-		String r[] = new String [res.size()];
-		for(int i=0; i<res.size();++i){
-			r[i]=res.get(i).get(0);
-		}
-		return r;
-	}
-	public String[] obtenirFilesNivells() throws Exception{
-		ArrayList<ArrayList<String>> res = cujp.obtenirNivells();
-		String r[] = new String [res.size()];
-		for(int i=0; i<res.size();++i){
-			r[i]=res.get(i).get(1);
-		}
-		return r;
-	}public String[] obtenirColumnesNivells() throws Exception{
-		ArrayList<ArrayList<String>> res = cujp.obtenirNivells();
-		String r[] = new String [res.size()];
-		for(int i=0; i<res.size();++i){
-			r[i]=res.get(i).get(2);
-		}
-		return r;
-	}public String[] obtenirMinesNivells() throws Exception{
-		ArrayList<ArrayList<String>> res = cujp.obtenirNivells();
-		String r[] = new String [res.size()];
-		for(int i=0; i<res.size();++i){
-			r[i]=res.get(i).get(3);
-		}
-		return r;
-	}
-	public void mostrarMina(Integer nf, Integer nc){
-		partida.mostrarMina(nf,nc);
-	}
-	*/
 	public void printSquares(){
 		List<Square> squares = game.getSquares();
 		for(Square square : squares){

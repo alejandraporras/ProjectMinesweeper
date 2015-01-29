@@ -1,4 +1,3 @@
-/data
-/domain
-/hibernate.cfg.xml
 /presentation
+/domain
+/data

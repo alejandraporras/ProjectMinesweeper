@@ -17,6 +17,7 @@ public class CUPlayGame {
 	List<Square> squares = new ArrayList<Square>();
 	List<Square> squareToReveal = new ArrayList<Square>();
 	List<Square> squaresWithMine  = new ArrayList<Square>();
+	List<Square> squaresMarked = new ArrayList<Square>();
 	private Integer numberSquaresToWin;
 	private  boolean isLost;
 
@@ -129,50 +130,58 @@ public class CUPlayGame {
 	public void marcarDesmarcar(int nf, int nc) throws Exception {
 		int indexSquare = getIndexSquare(nf,nc);
 		Square square = squares.get(indexSquare);
-		
-		if (square.isMarked()) {
-			presentationController.desmarcarBoton(nf,nc);
+		if(!square.isUncovered()){
+			if (square.isMarked()) {
+				presentationController.desmarcarBoton(nf,nc);
+				squaresMarked.remove(indexSquare);
+			}
+			else {
+				presentationController.marcarBoton(nf,nc);
+				squaresMarked.add(square);
+			}
+			
+			square.setMarked(!square.isMarked());
+			
+			
 		}
-		else {
-			presentationController.marcarBoton(nf,nc);
-		}
-		
-		square.setMarked(!square.isMarked());
 		
 	}
 	public void toUncoverSquareRec(int row, int col){
 		if(game.validSquare(row,col)) {
 				Square square = getSquare (row,col);
-				if(square.isMine()){
-					isLost = true;
-					square.setUncovered(true);
-					squareToReveal.add(square);
-					return;
-				}
-				
-				else if(square.getValue() == null  && !square.isUncovered()){
-					--numberSquaresToWin;
-					square.setUncovered(true);
-					squareToReveal.add(square);
-					toUncoverSquareRec( row-1, col );
-					toUncoverSquareRec( row-1, col-1);
-					toUncoverSquareRec( row-1, col+1);
+				if(!square.isMarked()){
+					if(square.isMine()){
+						isLost = true;
+						square.setUncovered(true);
+						squareToReveal.add(square);
+						return;
+					}
 					
-					toUncoverSquareRec( row, col-1 );
-					toUncoverSquareRec( row, col+1 );
-					
-					toUncoverSquareRec( row+1, col );
-					toUncoverSquareRec( row+1, col+1 );
-					toUncoverSquareRec( row+1, col-1 );
+					else if(square.getValue() == null  && !square.isUncovered()){
+						--numberSquaresToWin;
+						square.setUncovered(true);
+						squareToReveal.add(square);
+						toUncoverSquareRec( row-1, col );
+						toUncoverSquareRec( row-1, col-1);
+						toUncoverSquareRec( row-1, col+1);
+						
+						toUncoverSquareRec( row, col-1 );
+						toUncoverSquareRec( row, col+1 );
+						
+						toUncoverSquareRec( row+1, col );
+						toUncoverSquareRec( row+1, col+1 );
+						toUncoverSquareRec( row+1, col-1 );
+						
+					}
+					else if(square.getValue() != null && !square.isUncovered()){
+						--numberSquaresToWin;
+						square.setUncovered(true);
+						squareToReveal.add(square);
+						return;
+					}
+					else return;
 					
 				}
-				else if(square.getValue() != null && !square.isUncovered()){
-					--numberSquaresToWin;
-					square.setUncovered(true);
-					squareToReveal.add(square);
-					return;
-				}
-				else return;
 		}
 		else return;
 	}
@@ -232,10 +241,7 @@ public class CUPlayGame {
 	public void setLevel(Level level) {
 		this.level = level;
 	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
-	}
 	public List<Square> getSquares() {
 		return squares;
 	}
@@ -243,6 +249,15 @@ public class CUPlayGame {
 		this.squares = squares;
 	}
 	
+	
+	public List<Square> getSquaresMarked() {
+		return squaresMarked;
+	}
+
+	public void setSquaresMarked(List<Square> squaresMarked) {
+		this.squaresMarked = squaresMarked;
+	}
+
 	public void printBoard(){
 		System.out.println("Imprimiendo tableroooooooo");
 		for(int i = 0; i < 8; ++i){
@@ -286,5 +301,8 @@ public class CUPlayGame {
 
 	public void setSquaresWithMine(List<Square> squaresWithMine) {
 		this.squaresWithMine = squaresWithMine;
+	}
+	public Game getGame(){
+		return game;
 	}
 }
